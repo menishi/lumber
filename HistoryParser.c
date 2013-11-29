@@ -19,7 +19,8 @@
 *  
 *  You should have received a copy of the GNU General Public License
 *  along with Lumber.  If not, see <http://www.gnu.org/licenses/>.
-
+*  
+*  Copyright 2013 Donal O'Shea
 ***********************/
 
 char *parseHistoryLine(char* line) {
