@@ -23,6 +23,31 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
+int countLines(FILE *file) {
+  char x;
+  int n = 0;
+  x = fgetc(file);
+  while (!feof(file)) {
+    if (x == '\n') n++;
+    x = fgetc(file);
+  }
+  rewind(file);
+  return n;
+}
+
+char* getNthLineFromBottom(struct fileAndLen *file, char* line, int n) {
+  return getNthLine(file, line, n);
+}
+
+char* getNthLine(struct fileAndLen *file, char* line, int n) {
+  int i = 0;
+  while (i < n) {
+    line = getLine(file->file, line);
+    i++;
+  }
+  return line;
+}
+
 char *getLine(FILE *file, char* line) {
   char *start = line;
   while ((*line = fgetc(file)) && *line != '\n')

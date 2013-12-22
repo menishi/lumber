@@ -16,3 +16,16 @@
 *
 *  Copyright 2013 Donal O'Shea
 ***********************/
+int stringToInt(char* string);
+
+struct args {
+  char* file;
+  int lines;
+};
+
+struct fileAndLen {
+  FILE *file;
+  int length;
+};
+
+

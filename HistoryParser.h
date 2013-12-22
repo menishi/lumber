@@ -21,5 +21,8 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
+int countLines(FILE *file);
+char *getNthLine(struct fileAndLen *file, char* line, int n);
+char *getNthLineFromBottom(struct fileAndLen *file, char* line, int n);
 char *parseHistoryLine(char *line);
 char *getLine(FILE *file, char *line);

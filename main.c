@@ -23,6 +23,34 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
+struct args *argproc(int argc, char *argv[]) {
+  /***********************
+   * Acceptable options:
+   * NOTE: not all implemented yet. This is is to serve as a guide for direction.
+   *  -f --file [FILENAME]       Specify a history file (~/.history used by default)
+   *  -p --previous [NUMBER]     List last NUMBER of lines in current logfile.
+   *  -d --date [YYMMDD-HHMM]    Specify dates to list history from. *
+   *  -t --time [HHMM-HHMM]      Specify times to receive logs from.
+   *  -a --all                   Specify all logs not just current.
+   *  -l --log                   Specify a list of logs to use.
+   *  -s --search                Search for entry in logs.
+   *  -w --swap                  Change current log to a different one.
+   *  -c --create                Create a new log.
+   *  -m --move                  Move selected lines to selected logs.
+   ***********************/  
+  struct args *all = malloc(sizeof(struct args));
+  int i;
+  for (i = 1; i < argc; i++) {
+    if (!strcmp(argv[i], "--last") || !strcmp(argv[i], "-l")) {
+      all->lines = stringToInt(argv[++i]);
+    } else if (!strcmp(argv[i], "--file") || !strcmp(argv[i], "-f")) {
+      all->file = argv[++i];
+    }
+  }
+  return all;
+}
+
+
 int stringToInt(char* string) {
   int accum = 0;
   char * p = string;
@@ -35,10 +63,12 @@ int stringToInt(char* string) {
 }
 
 int main(int argc, char *argv[]) {
-  if (strcmp(argv[1], "last") == 0) {
-    printf("%d\n", stringToInt(argv[2]));
-  }
-  FILE *file = fopen("history","r");
-  char *line = malloc(sizeof(int)*10);
+  struct args *all;
+  all = argproc(argc, argv);
+  struct fileAndLen *histFile;
+  histFile->file = fopen(all->file, "r");
+  histFile->length = countLines(histFile->file);
+  char *line = malloc(sizeof(int)*100);
+  //printf("%s\n", getNthLineFromBottom(histFile, line, 4));
   return 0;
 }
