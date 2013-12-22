@@ -3,7 +3,6 @@
 #include <string.h>
 #include "main.h"
 #include "HistoryParser.h"
-#include <sqlite3.h>
 
 /***********************
 *  This file is part of Lumber.
@@ -24,11 +23,22 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
+int stringToInt(char* string) {
+  int accum = 0;
+  char * p = string;
+  while (*p != '\0') {
+    accum = accum * 10;
+    accum += (int) *p -48;
+    p++;
+  }
+  return accum;
+}
+
 int main(int argc, char *argv[]) {
-  sqlite3 *db;
+  if (strcmp(argv[1], "last") == 0) {
+    printf("%d\n", stringToInt(argv[2]));
+  }
   FILE *file = fopen("history","r");
   char *line = malloc(sizeof(int)*10);
-  int rc = sqlite3_open("new.db", &db);
-  printf("%s\n", line);
   return 0;
 }
