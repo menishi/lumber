@@ -23,6 +23,14 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
+char *getLine(FILE *file, char* line) {
+  char *start = line;
+  while ((*line = fgetc(file)) && *line != '\n')
+    line++;
+  *line = '\0';
+  return start;
+}
+
 char *parseHistoryLine(char* line) {
  char *c;
  c = &*line;

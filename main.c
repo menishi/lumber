@@ -25,9 +25,10 @@
 ***********************/
 
 int main(int argc, char *argv[]) {
+  sqlite3 *db;
   FILE *file = fopen("history","r");
   char *line = malloc(sizeof(int)*10);
-  strcpy(line, ": 1385766701:0;cat ~/.history");
-  printf("%s\n", parseHistoryLine(line));
+  int rc = sqlite3_open("new.db", &db);
+  printf("%s\n", line);
   return 0;
 }

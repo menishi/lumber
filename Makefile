@@ -5,4 +5,3 @@ lumber: main.c HistoryParser.c
 
 clean:
 	rm -rf lumber
-

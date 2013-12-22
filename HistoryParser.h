@@ -22,3 +22,4 @@
 ***********************/
 
 char *parseHistoryLine(char *line);
+char *getLine(FILE *file, char *line);
