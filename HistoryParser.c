@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "HistoryParser.h"
+#include "main.h"
 
 
 /***********************
