@@ -1,10 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "main.h"
-#include "ArgumentProcessing.h"
-#include "HistoryParser.h"
-
 /***********************
 *  This file is part of Lumber.
 *  
@@ -24,13 +17,5 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
-int main(int argc, char *argv[]) {
-  struct args *all;
-  all = argproc(argc, argv);
-  struct fileAndLen *histFile = malloc(sizeof(struct fileAndLen));
-  histFile->file = fopen(all->file, "r");
-  histFile->length = countLines(histFile->file);
-  char *line = malloc(sizeof(int)*100);
-  printf("%s\n", getNthLineFromBottom(histFile, line, all->lines));
-  return 0;
-}
+struct args *argproc(int argc, char *argv[]);
+int stringToInt(char* string);

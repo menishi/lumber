@@ -1,4 +1,5 @@
 #pragma once
+
 /***********************
 *  This file is part of Lumber.
 *  
@@ -17,7 +18,6 @@
 *
 *  Copyright 2013 Donal O'Shea
 ***********************/
-int stringToInt(char* string);
 
 struct args {
   char* file;
