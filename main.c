@@ -65,10 +65,10 @@ int stringToInt(char* string) {
 int main(int argc, char *argv[]) {
   struct args *all;
   all = argproc(argc, argv);
-  struct fileAndLen *histFile;
+  struct fileAndLen *histFile = malloc(sizeof(struct fileAndLen));
   histFile->file = fopen(all->file, "r");
   histFile->length = countLines(histFile->file);
   char *line = malloc(sizeof(int)*100);
-  //printf("%s\n", getNthLineFromBottom(histFile, line, 4));
+  printf("%s\n", getNthLineFromBottom(histFile, line, 4));
   return 0;
 }

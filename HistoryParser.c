@@ -37,6 +37,7 @@ int countLines(FILE *file) {
 }
 
 char* getNthLineFromBottom(struct fileAndLen *file, char* line, int n) {
+  n = countLines(file->file) - n;
   return getNthLine(file, line, n);
 }
 
