@@ -47,6 +47,10 @@ struct args *argproc(int argc, char *argv[]) {
       all->file = argv[++i];
     }
   }
+	char* home = getenv("HOME");
+	if (all->file == NULL) {
+	  all->file = strcat(home, "/.history");
+	}
   return all;
 }
 

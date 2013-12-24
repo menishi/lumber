@@ -27,10 +27,14 @@
 int main(int argc, char *argv[]) {
   struct args *all;
   all = argproc(argc, argv);
+  if (all == NULL) return 2;
   struct fileAndLen *histFile = malloc(sizeof(struct fileAndLen));
   histFile->file = fopen(all->file, "r");
   histFile->length = countLines(histFile->file);
+  int n;
   char *line = malloc(sizeof(int)*100);
-  printf("%s\n", getNthLineFromBottom(histFile, line, all->lines));
+  for (n = all->lines;n >=0; n--) {
+    printf("%s\n", getNthLineFromBottom(histFile, line, n));
+  }
   return 0;
 }
