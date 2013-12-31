@@ -27,12 +27,10 @@ void envproc(struct args *all);
 
 struct args *optproc(int argc, char *argv[]) {
   /***********************
-   * Acceptable commands:
-   *  create                     Create a new log.
-   *  swap                       Change current log to a different one.
-   *  search                     Search for entry in logs.
+   * This is a method for extracting options from the arguments
    *
    * NOTE: not all implemented yet. This is is to serve as a guide for direction.
+   * Acceptable options:
    *  -f --file [FILENAME]       Specify a history file (~/.history used by default)
    *  -p --previous [NUMBER]     List last NUMBER of lines in current logfile.
    *  -d --date [YYMMDD-HHMM]    Specify dates to list history from. *
@@ -61,6 +59,9 @@ struct args *optproc(int argc, char *argv[]) {
 }
 
 void envproc(struct args *all) {
+  // This method has the job of extracting
+  // default values and other information
+  // from environment variables.
   all->home = getenv("HOME");
   if (!(logDirectory = getenv("LUMBHOME"))) {
       logDirectory = strcat(all->home, "/.lumber/");
@@ -68,6 +69,16 @@ void envproc(struct args *all) {
 }
 
 int cmdproc(int argc, char *argv[]) {
+  /***********************
+   * Primary workhorse command deals with extracting 
+   * the actual command from arguments and returning a code.
+   *
+   * Acceptable commands:
+   *  create                     Create a new log.
+   *  swap                       Change current log to a different one.
+   *  search                     Search for entry in logs.
+   *
+   **********************/
   if (argc < 3)
     return 0;
   if (!strcmp(argv[1], "create"))
