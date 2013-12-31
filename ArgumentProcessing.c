@@ -23,9 +23,15 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
-struct args *argproc(int argc, char *argv[]) {
+void envproc(struct args *all);
+
+struct args *optproc(int argc, char *argv[]) {
   /***********************
-   * Acceptable options:
+   * Acceptable commands:
+   *  create                     Create a new log.
+   *  swap                       Change current log to a different one.
+   *  search                     Search for entry in logs.
+   *
    * NOTE: not all implemented yet. This is is to serve as a guide for direction.
    *  -f --file [FILENAME]       Specify a history file (~/.history used by default)
    *  -p --previous [NUMBER]     List last NUMBER of lines in current logfile.
@@ -33,25 +39,40 @@ struct args *argproc(int argc, char *argv[]) {
    *  -t --time [HHMM-HHMM]      Specify times to receive logs from.
    *  -a --all                   Specify all logs not just current.
    *  -l --log                   Specify a list of logs to use.
-   *  -s --search                Search for entry in logs.
-   *  -w --swap                  Change current log to a different one.
-   *  -c --create                Create a new log.
    *  -m --move                  Move selected lines to selected logs.
    ***********************/  
+
   struct args *all = malloc(sizeof(struct args));
+  envproc(all);
   int i;
-  for (i = 1; i < argc; i++) {
+  all->lines = 0;
+  for (i = 2; i < argc; i++) {
     if (!strcmp(argv[i], "--last") || !strcmp(argv[i], "-l")) {
       all->lines = stringToInt(argv[++i]);
     } else if (!strcmp(argv[i], "--file") || !strcmp(argv[i], "-f")) {
       all->file = argv[++i];
     }
   }
-	char* home = getenv("HOME");
+
 	if (all->file == NULL) {
-	  all->file = strcat(home, "/.history");
+	  all->file = strcat(all->home, "/.history");
 	}
   return all;
+}
+
+void envproc(struct args *all) {
+  all->home = getenv("HOME");
+  if (!(logDirectory = getenv("LUMBHOME"))) {
+      logDirectory = strcat(all->home, "/.lumber/");
+  }
+}
+
+int cmdproc(int argc, char *argv[]) {
+  if (argc < 3)
+    return 0;
+  if (!strcmp(argv[1], "create"))
+    return 1;
+  return 0;
 }
 
 

@@ -17,5 +17,6 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
-struct args *argproc(int argc, char *argv[]);
+struct args *optproc(int argc, char *argv[]);
+int cmdproc(int argc, char *argv[]);
 int stringToInt(char* string);

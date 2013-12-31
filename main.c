@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 #include "main.h"
 #include "ArgumentProcessing.h"
 #include "HistoryParser.h"
@@ -26,15 +27,31 @@
 
 int main(int argc, char *argv[]) {
   struct args *all;
-  all = argproc(argc, argv);
-  if (all == NULL) return 2;
+  FILE *log;
+  all = optproc(argc, argv);
+  switch (cmdproc(argc, argv)) {
+    case 0:
+      all = NULL;
+      break;
+    // 1 for a create statement
+    case 1:
+      log = fopen(strcat(logDirectory, argv[2]), "a");
+      break;
+  }
+  if (all == NULL){
+    fprintf(stderr, "Error incorrect arguments. Usage: lumber command options\n");
+    return 2;
+  }
+
+  // histFile is where we store the main history file created by bash/zsh
   struct fileAndLen *histFile = malloc(sizeof(struct fileAndLen));
   histFile->file = fopen(all->file, "r");
   histFile->length = countLines(histFile->file);
+
   int n;
   char *line = malloc(sizeof(int)*100);
   for (n = all->lines;n >=0; n--) {
-    printf("%s\n", getNthLineFromBottom(histFile, line, n));
+    printf("%s\n", parseHistoryLine(getNthLineFromBottom(histFile, line, n)));
   }
   return 0;
 }

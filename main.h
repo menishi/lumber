@@ -19,8 +19,11 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
+char *logDirectory;
+
 struct args {
   char* file;
+  char *home;
   int lines;
 };
 
@@ -28,5 +31,3 @@ struct fileAndLen {
   FILE *file;
   int length;
 };
-
-
