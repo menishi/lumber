@@ -64,7 +64,9 @@ void envproc(struct args *all) {
   // from environment variables.
   all->home = getenv("HOME");
   if (!(logDirectory = getenv("LUMBHOME"))) {
-      logDirectory = strcat(all->home, "/.lumber/");
+      logDirectory = malloc(sizeof(char)*150);
+      strcat(logDirectory,  all->home);
+      strcat(logDirectory, "/.lumber/");
   }
 }
 
@@ -79,6 +81,7 @@ int cmdproc(int argc, char *argv[]) {
    *  search                     Search for entry in logs.
    *
    **********************/
+  
   if (argc < 3)
     return 0;
   if (!strcmp(argv[1], "create"))
@@ -86,6 +89,18 @@ int cmdproc(int argc, char *argv[]) {
   return 0;
 }
 
+char *pathToFile(char *directory, char *file) {
+  char *filePath = malloc(sizeof(*directory)+sizeof(*file)+10);
+  int i;
+  for (i = 0; directory[i] != '\0'; i++) {
+    if (directory[i+1] == '\0' && directory[i] != '/') strcat(directory,"/");
+  }
+  strcat(filePath, directory);
+  strcat(filePath, file);
+  printf("%s\n",filePath);
+  return filePath;
+}
+  
 
 int stringToInt(char* string) {
   int accum = 0;

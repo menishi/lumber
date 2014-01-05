@@ -30,12 +30,17 @@ int main(int argc, char *argv[]) {
   FILE *log;
   all = optproc(argc, argv);
   switch (cmdproc(argc, argv)) {
+    // This is our error catch
     case 0:
       all = NULL;
       break;
     // 1 for a create statement
     case 1:
-      log = fopen(strcat(logDirectory, argv[2]), "a");
+      log = fopen(pathToFile(logDirectory,argv[2]), "a");
+      if (!log) {
+        fprintf(stderr, "Error, file could not be opened\n");
+        return 3;
+      }
       break;
   }
   if (all == NULL){
@@ -50,8 +55,9 @@ int main(int argc, char *argv[]) {
 
   int n;
   char *line = malloc(sizeof(int)*100);
+
   for (n = all->lines;n >=0; n--) {
-    printf("%s\n", parseHistoryLine(getNthLineFromBottom(histFile, line, n)));
+    fprintf(log, "%s\n", parseHistoryLine(getNthLineFromBottom(histFile, line, n)));
   }
   return 0;
 }

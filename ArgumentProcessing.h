@@ -19,4 +19,5 @@
 
 struct args *optproc(int argc, char *argv[]);
 int cmdproc(int argc, char *argv[]);
+char *pathToFile(char *directory,char *file);
 int stringToInt(char* string);
