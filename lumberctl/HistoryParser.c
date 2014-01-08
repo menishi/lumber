@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "HistoryParser.h"
-#include "main.h"
+#include "lumber.h"
 
 
 /***********************
@@ -24,6 +24,15 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
+char *getIdentifierFromLine(char *line) {
+  char *ident = malloc(sizeof(char)*30);
+  int i = 0;
+  while (*line != ';') {
+    ident[i++] = *line;
+    line++;
+  }
+  return ident;
+}
 int countLines(FILE *file) {
   char x;
   int n = 0;
@@ -75,3 +84,4 @@ char *parseHistoryLine(char* line) {
  *pointIt = '\0';
  return strCmd;
 } 
+

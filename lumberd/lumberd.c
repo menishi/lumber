@@ -1,7 +1,6 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "lumber.h"
+#include <unistd.h>
+#include "lumberd.h"
 
 /***********************
 *  This file is part of Lumber.
@@ -22,9 +21,9 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
-char *getIdentifierFromLine(char *line);
-int countLines(FILE *file);
-char *getNthLine(struct fileAndLen *file, char* line, int n);
-char *getNthLineFromBottom(struct fileAndLen *file, char* line, int n);
-char *parseHistoryLine(char *line);
-char *getLine(FILE *file, char *line);
+
+int main() {
+  int pid = fork();
+  printf("%d\n", pid);
+  return 0;
+}

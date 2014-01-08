@@ -19,6 +19,10 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
+#define CMD_ERROR 1
+#define ARGUMENT_ERROR 2
+#define FILE_ERROR 3
+
 char *logDirectory;
 
 struct args {

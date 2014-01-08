@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/stat.h>
-#include "main.h"
+#include "lumber.h"
 #include "ArgumentProcessing.h"
 #include "HistoryParser.h"
 
@@ -28,7 +27,18 @@
 int main(int argc, char *argv[]) {
   struct args *all;
   FILE *log;
+  // Extract any options from the command line
   all = optproc(argc, argv);
+
+  struct fileAndLen *histFile = malloc(sizeof(struct fileAndLen));
+  histFile->file = fopen(all->file, "r");
+  histFile->length = countLines(histFile->file);
+
+  int n;
+  char *line = malloc(sizeof(int)*100);
+
+
+  // Here is our main command processing loop
   switch (cmdproc(argc, argv)) {
     // This is our error catch
     case 0:
@@ -39,25 +49,21 @@ int main(int argc, char *argv[]) {
       log = fopen(pathToFile(logDirectory,argv[2]), "a");
       if (!log) {
         fprintf(stderr, "Error, file could not be opened\n");
-        return 3;
+        return FILE_ERROR;
+      }
+
+      // This component takes the last n lines from the history file and enters it into the
+      // log file
+      for (n = all->lines;n >=0; n--) {
+        fprintf(log, "%s\n", getNthLineFromBottom(histFile, line, n));
       }
       break;
   }
+
   if (all == NULL){
     fprintf(stderr, "Error incorrect arguments. Usage: lumber command options\n");
-    return 2;
+    return ARGUMENT_ERROR;
   }
-
-  // histFile is where we store the main history file created by bash/zsh
-  struct fileAndLen *histFile = malloc(sizeof(struct fileAndLen));
-  histFile->file = fopen(all->file, "r");
-  histFile->length = countLines(histFile->file);
-
-  int n;
-  char *line = malloc(sizeof(int)*100);
-
-  for (n = all->lines;n >=0; n--) {
-    fprintf(log, "%s\n", parseHistoryLine(getNthLineFromBottom(histFile, line, n)));
-  }
+  // histFile is where we store the lumber.history file created by bash/zsh
   return 0;
 }

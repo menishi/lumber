@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "ArgumentProcessing.h"
-#include "main.h"
+#include "lumber.h"
 
 /***********************
 *  This file is part of Lumber.
@@ -85,7 +85,7 @@ int cmdproc(int argc, char *argv[]) {
   if (argc < 3)
     return 0;
   if (!strcmp(argv[1], "create"))
-    return 1;
+    return CMD_ERROR;
   return 0;
 }
 
@@ -97,7 +97,6 @@ char *pathToFile(char *directory, char *file) {
   }
   strcat(filePath, directory);
   strcat(filePath, file);
-  printf("%s\n",filePath);
   return filePath;
 }
   
