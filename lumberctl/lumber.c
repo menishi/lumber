@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "lumber.h"
 #include "ArgumentProcessing.h"
 #include "HistoryParser.h"
@@ -26,6 +27,7 @@
 
 int main(int argc, char *argv[]) {
   struct args *all;
+  char *logFilePath;
   FILE *log;
   // Extract any options from the command line
   all = optproc(argc, argv);
@@ -46,9 +48,14 @@ int main(int argc, char *argv[]) {
       break;
     // 1 for a create statement
     case 1:
-      log = fopen(pathToFile(logDirectory,argv[2]), "a");
+      logFilePath = pathToFile(logDirectory,argv[2]);
+      if (access(logFilePath, F_OK) != -1) {
+        fprintf(stderr, "ERROR: log \"%s\" already exits\n", argv[2]);
+        return LOG_EXISTS_ERROR;
+      }
+      log = fopen(logFilePath, "w");
       if (!log) {
-        fprintf(stderr, "Error, file could not be opened\n");
+        fprintf(stderr, "ERROR: file could not be opened\n");
         return FILE_ERROR;
       }
 
