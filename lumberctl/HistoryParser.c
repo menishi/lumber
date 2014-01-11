@@ -27,12 +27,13 @@
 char *getIdentifierFromLine(char *line) {
   char *ident = malloc(sizeof(char)*30);
   int i = 0;
-  while (*line != ';') {
-    ident[i++] = *line;
-    line++;
+  while (line[i] != ';') {
+    ident[i] = line[i];
+    i++;
   }
   return ident;
 }
+
 int countLines(FILE *file) {
   char x;
   int n = 0;
@@ -45,15 +46,15 @@ int countLines(FILE *file) {
   return n;
 }
 
-char* getNthLineFromBottom(struct fileAndLen *file, char* line, int n) {
-  n = countLines(file->file) - n;
+char* getNthLineFromBottom(FILE *file, char* line, int n) {
+  n = countLines(file) - n;
   return getNthLine(file, line, n);
 }
 
-char* getNthLine(struct fileAndLen *file, char* line, int n) {
+char* getNthLine(FILE *file, char* line, int n) {
   int i = 0;
   while (i < n) {
-    line = getLine(file->file, line);
+    line = getLine(file, line);
     i++;
   }
   return line;

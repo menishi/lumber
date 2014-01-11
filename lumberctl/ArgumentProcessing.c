@@ -92,7 +92,7 @@ int cmdproc(int argc, char *argv[]) {
 }
 
 char *pathToFile(char *directory, char *file) {
-  char *filePath = malloc(sizeof(*directory)+sizeof(*file)+10);
+  char *filePath = malloc(strlen(directory)+strlen(file)+2);
   int i;
   for (i = 0; directory[i] != '\0'; i++) {
     if (directory[i+1] == '\0' && directory[i] != '/') strcat(directory,"/");
@@ -105,7 +105,7 @@ char *pathToFile(char *directory, char *file) {
 
 int stringToInt(char* string) {
   int accum = 0;
-  char * p = string;
+  char *p = string;
   while (*p != '\0') {
     accum = accum * 10;
     accum += (int) *p -48;

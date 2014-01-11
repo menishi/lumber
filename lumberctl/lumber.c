@@ -28,7 +28,6 @@
 int main(int argc, char *argv[]) {
   int returnCode = 0;
   struct args *all;
-  char *logFilePath;
   FILE *log;
 
   all = optproc(argc, argv);  // This extracts our options
@@ -39,6 +38,8 @@ int main(int argc, char *argv[]) {
 
   int n;
   char *line = malloc(sizeof(int)*100);
+  char *nudderline;
+  char *logFilePath;
 
   int cmdCode = cmdproc(argc, argv);
   switch(cmdCode)  {
@@ -58,7 +59,6 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "ERROR: file could not be opened\n");
         returnCode = FILE_ERROR;
       }
-
       break;
 
     case 2:                                                            // 2 for a switch statement
@@ -67,17 +67,23 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "ERROR: log \"%s\" does not exist\n", argv[2]);
         return INVALID_LOG_ERROR;
       }
-      log = fopen(logFilePath, "a");
+      log = fopen(logFilePath, "r");
       if (!log) {
         fprintf(stderr, "ERROR: file could not be opened\n");
         returnCode =  FILE_ERROR;
+      } else {
+        line = getNthLineFromBottom(log, line, 0);
+        line = getIdentifierFromLine(line);
+        printf("%s\n",logFilePath);
+        fclose(log);
       }
-
+      log = fopen(logFilePath, "a");
       break;
   }
   if (cmdCode == 1 || cmdCode == 2) {
-    for (n = all->lines;n >=0; n--) {                                // This component takes the last n lines 
-      fprintf(log, "%s\n", getNthLineFromBottom(histFile, line, n)); // from the history file and enters it into the
+    for (n = all->lines;n >= 0; n--) {                                // This component takes the last n lines 
+      fprintf(log, "%s\n", getNthLineFromBottom(histFile->file, line, n)); // from the history file and enters it into the
+//      printf("%s\n", getNthLineFromBottom(histFile->file, line, n));
     }                                                                // log file
   }
   return returnCode;

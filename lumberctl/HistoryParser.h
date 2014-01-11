@@ -24,7 +24,7 @@
 
 char *getIdentifierFromLine(char *line);
 int countLines(FILE *file);
-char *getNthLine(struct fileAndLen *file, char* line, int n);
-char *getNthLineFromBottom(struct fileAndLen *file, char* line, int n);
+char *getNthLine(FILE *file, char* line, int n);
+char *getNthLineFromBottom(FILE *file, char* line, int n);
 char *parseHistoryLine(char *line);
 char *getLine(FILE *file, char *line);
