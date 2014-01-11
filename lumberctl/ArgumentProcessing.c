@@ -85,7 +85,9 @@ int cmdproc(int argc, char *argv[]) {
   if (argc < 3)
     return 0;
   if (!strcmp(argv[1], "create"))
-    return CMD_ERROR;
+    return 1;
+  else if (!strcmp(argv[1], "switch")) 
+    return 2;
   return 0;
 }
 

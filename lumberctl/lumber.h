@@ -19,10 +19,10 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
-#define CMD_ERROR 1
 #define ARGUMENT_ERROR 2
 #define FILE_ERROR 3
 #define LOG_EXISTS_ERROR 4
+#define INVALID_LOG_ERROR 5
 
 char *logDirectory;
 

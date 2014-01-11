@@ -26,11 +26,12 @@
 ***********************/
 
 int main(int argc, char *argv[]) {
+  int returnCode = 0;
   struct args *all;
   char *logFilePath;
   FILE *log;
-  // Extract any options from the command line
-  all = optproc(argc, argv);
+
+  all = optproc(argc, argv);  // This extracts our options
 
   struct fileAndLen *histFile = malloc(sizeof(struct fileAndLen));
   histFile->file = fopen(all->file, "r");
@@ -39,38 +40,45 @@ int main(int argc, char *argv[]) {
   int n;
   char *line = malloc(sizeof(int)*100);
 
-
-  // Here is our main command processing loop
-  switch (cmdproc(argc, argv)) {
-    // This is our error catch
+  int cmdCode = cmdproc(argc, argv);
+  switch(cmdCode)  {
     case 0:
-      all = NULL;
+      fprintf(stderr, "Error incorrect arguments. Usage: lumber command options\n");
+      returnCode = ARGUMENT_ERROR;
       break;
-    // 1 for a create statement
-    case 1:
+    
+    case 1:                                                            // 1 for a create statement
       logFilePath = pathToFile(logDirectory,argv[2]);
       if (access(logFilePath, F_OK) != -1) {
-        fprintf(stderr, "ERROR: log \"%s\" already exits\n", argv[2]);
-        return LOG_EXISTS_ERROR;
+        fprintf(stderr, "ERROR: log \"%s\" already exists\n", argv[2]);
+        returnCode =  LOG_EXISTS_ERROR;
       }
       log = fopen(logFilePath, "w");
       if (!log) {
         fprintf(stderr, "ERROR: file could not be opened\n");
-        return FILE_ERROR;
+        returnCode = FILE_ERROR;
       }
 
-      // This component takes the last n lines from the history file and enters it into the
-      // log file
-      for (n = all->lines;n >=0; n--) {
-        fprintf(log, "%s\n", getNthLineFromBottom(histFile, line, n));
+      break;
+
+    case 2:                                                            // 2 for a switch statement
+      logFilePath = pathToFile(logDirectory, argv[2]);
+      if (access(logFilePath, F_OK) == -1) {
+        fprintf(stderr, "ERROR: log \"%s\" does not exist\n", argv[2]);
+        return INVALID_LOG_ERROR;
       }
+      log = fopen(logFilePath, "a");
+      if (!log) {
+        fprintf(stderr, "ERROR: file could not be opened\n");
+        returnCode =  FILE_ERROR;
+      }
+
       break;
   }
-
-  if (all == NULL){
-    fprintf(stderr, "Error incorrect arguments. Usage: lumber command options\n");
-    return ARGUMENT_ERROR;
+  if (cmdCode == 1 || cmdCode == 2) {
+    for (n = all->lines;n >=0; n--) {                                // This component takes the last n lines 
+      fprintf(log, "%s\n", getNthLineFromBottom(histFile, line, n)); // from the history file and enters it into the
+    }                                                                // log file
   }
-  // histFile is where we store the lumber.history file created by bash/zsh
-  return 0;
+  return returnCode;
 }
