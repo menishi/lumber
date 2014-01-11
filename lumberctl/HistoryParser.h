@@ -28,3 +28,4 @@ char *getNthLine(FILE *file, char* line, int n);
 char *getNthLineFromBottom(FILE *file, char* line, int n);
 char *parseHistoryLine(char *line);
 char *getLine(FILE *file, char *line);
+int getLineNumberWithIdent(FILE *file, char *ident);

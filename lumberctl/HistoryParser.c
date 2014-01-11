@@ -57,6 +57,7 @@ char* getNthLine(FILE *file, char* line, int n) {
     line = getLine(file, line);
     i++;
   }
+  rewind(file);
   return line;
 }
 
@@ -86,3 +87,16 @@ char *parseHistoryLine(char* line) {
  return strCmd;
 } 
 
+
+int getLineNumberWithIdent(FILE *file, char *ident) {
+  char *line = malloc(sizeof(char)*30);
+  int i = 0;
+  while ((line = getLine(file, line))) {
+      if (!strcmp(ident, getIdentifierFromLine(line))) {
+        break;
+      }
+      i++;
+  }
+  rewind(file);
+  return i;
+}

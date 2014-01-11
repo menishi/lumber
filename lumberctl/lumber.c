@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
       } else {
         line = getNthLineFromBottom(log, line, 0);
         line = getIdentifierFromLine(line);
-        printf("%s\n",logFilePath);
+        all->lines = histFile->length - getLineNumberWithIdent(histFile->file, line);
         fclose(log);
       }
       log = fopen(logFilePath, "a");
@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) {
   if (cmdCode == 1 || cmdCode == 2) {
     for (n = all->lines;n >= 0; n--) {                                // This component takes the last n lines 
       fprintf(log, "%s\n", getNthLineFromBottom(histFile->file, line, n)); // from the history file and enters it into the
-//      printf("%s\n", getNthLineFromBottom(histFile->file, line, n));
+      printf("%s\n", getNthLineFromBottom(histFile->file, line, n));
     }                                                                // log file
   }
   return returnCode;
