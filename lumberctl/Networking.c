@@ -11,8 +11,7 @@
 #define MAXREC 100
 #define PORTNUM 1887
 
-int getMessage() {
-  char buffer[] = "Hello Fish!";
+int sendMessage(char *msg) {
   int len, mysocket;
   struct sockaddr_in dest;
 
@@ -24,13 +23,9 @@ int getMessage() {
   dest.sin_port = htons(PORTNUM);
 
   int r = connect(mysocket, (struct sockaddr *)&dest, sizeof(struct sockaddr));
-  write(mysocket,buffer, strlen(buffer));
+  write(mysocket, msg, strlen(msg));
   printf("%d\n", r);
 
   close(mysocket);
   return EXIT_SUCCESS;
-}
-
-int main() {
-  return getMessage();
 }
