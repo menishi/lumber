@@ -5,6 +5,7 @@
 #include "lumber.h"
 #include "ArgumentProcessing.h"
 #include "HistoryParser.h"
+#include "Networking.h"
 
 /***********************
 *  This file is part of Lumber.
@@ -79,6 +80,11 @@ int main(int argc, char *argv[]) {
       }
       log = fopen(logFilePath, "a");
       break;
+
+    case 3: 
+      sendMessage("kill");
+      break;
+
   }
   if (cmdCode == 1 || cmdCode == 2) {
     for (n = all->lines;n >= 0; n--) {                                // This component takes the last n lines 

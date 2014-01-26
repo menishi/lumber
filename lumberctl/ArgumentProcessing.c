@@ -79,9 +79,12 @@ int cmdproc(int argc, char *argv[]) {
    *  create                     Create a new log.
    *  swap                       Change current log to a different one.
    *  search                     Search for entry in logs.
+	 *  kill
    *
    **********************/
   
+	if (!strcmp(argv[1], "kill"))
+		return 3;
   if (argc < 3)
     return 0;
   if (!strcmp(argv[1], "create"))

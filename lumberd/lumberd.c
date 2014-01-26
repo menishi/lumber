@@ -58,7 +58,11 @@ int main() {
     while (consocket) {
       len = recv(consocket, msg, 100, 0);
       msg[len] = '\0';
-      if (len > 0) printf("%s %d\n", msg, len);
+      if (len > 0) {
+        if (!strcmp(msg, "kill"))
+          break;
+        printf("%s %d\n", msg, len);
+      }
       consocket = accept(mysocket, (struct sockaddr *)&dest, &socksize);
     }
     close(consocket);
