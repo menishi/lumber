@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <sys/socket.h>
 #include "lumberd.h"
 
 /***********************
@@ -24,6 +25,8 @@
 
 int main() {
   int pid = fork();
-  printf("%d\n", pid);
+  if (pid == 0) {
+    int sid = setsid();
+    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
   return 0;
 }
