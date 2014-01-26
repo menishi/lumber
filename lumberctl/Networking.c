@@ -23,10 +23,9 @@ int getMessage() {
   dest.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
   dest.sin_port = htons(PORTNUM);
 
-  connect(mysocket, (struct sockaddr *)&dest, sizeof(struct sockaddr));
-  printf("%s\n", buffer);
+  int r = connect(mysocket, (struct sockaddr *)&dest, sizeof(struct sockaddr));
   write(mysocket,buffer, strlen(buffer));
-
+  printf("%d\n", r);
 
   close(mysocket);
   return EXIT_SUCCESS;

@@ -1,52 +1,47 @@
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <errno.h>
 #include <string.h>
+#include <unistd.h>
+#include <arpa/inet.h>
 #include <sys/types.h>
- 
-int main(void)
-{
-    int listenfd = 0,connfd = 0;
-      
-      struct sockaddr_in serv_addr;
-       
-        char sendBuff[1025];  
-          int numrv;  
-           
-            listenfd = socket(AF_INET, SOCK_STREAM, 0);
-              printf("socket retrieve success\n");
-                
-                memset(&serv_addr, '0', sizeof(serv_addr));
-                  memset(sendBuff, '0', sizeof(sendBuff));
-                        
-                    serv_addr.sin_family = AF_INET;    
-                      serv_addr.sin_addr.s_addr = htonl(INADDR_ANY); 
-                        serv_addr.sin_port = htons(5000);    
-                         
-                          bind(listenfd, (struct sockaddr*)&serv_addr,sizeof(serv_addr));
-                            
-                            if(listen(listenfd, 10) == -1){
-                                    printf("Failed to listen\n");
-                                          return -1;
-                                            }
-                                 
-                              
-                              while(1)
-                                    {
-                                            
-                                            connfd = accept(listenfd, (struct sockaddr*)NULL ,NULL); // accept awaiting request
-                                              
-                                                  strcpy(sendBuff, "Message from server");
-                                                        write(connfd, sendBuff, strlen(sendBuff));
-                                                         
-                                                              close(connfd);    
-                                                                    sleep(1);
-                                                                        }
-                               
-                               
-                                return 0;
+#include <netinet/in.h>
+#include <sys/socket.h>
+
+#define PORTNUM 1887
+
+int server() {
+  char msg[101];
+
+  struct sockaddr_in dest;
+  struct sockaddr_in serv;
+  int mysocket;
+  socklen_t socksize = sizeof(struct sockaddr_in);
+
+  memset(&serv, 0, sizeof(serv));
+
+  serv.sin_family = AF_INET;
+  serv.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+  serv.sin_port = htons(PORTNUM);
+
+  mysocket = socket(AF_INET, SOCK_STREAM, 0);
+  bind(mysocket, (struct sockaddr *)&serv, sizeof(struct sockaddr));
+
+  listen(mysocket, 2);
+  int consocket = accept(mysocket, (struct sockaddr *)&dest, &socksize);
+  int len;
+
+  while (consocket) {
+    printf("Incoming connection from %s - recieving welcome\n", inet_ntoa(dest.sin_addr));
+    len = recv(consocket, msg, 100, 0);
+    msg[len] = '\0';
+    if (len > 0) printf("%s %d\n", msg, len);
+    consocket = accept(mysocket, (struct sockaddr *)&dest, &socksize);
+  }
+  close(consocket);
+  close(mysocket);
+  return EXIT_SUCCESS;
+}
+
+int main() {
+  return server();
 }
