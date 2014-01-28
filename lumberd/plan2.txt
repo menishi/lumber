@@ -1,2 +1,7 @@
-Step 1: create a way to communicate with the process
-We will be using the loopback interface
+Task 1: create a way to communicate with the process
+   We will be using the loopback interface
+
+- DONE
+------------------------------------------------------
+Task 2: I need to add all the necessary error catching 
+   stuff to the program.
