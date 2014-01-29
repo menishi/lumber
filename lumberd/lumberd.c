@@ -8,9 +8,6 @@
 #include <sys/socket.h>
 #include "lumberd.h"
 
-#define PORTNUM 1887
-
-
 /***********************
 *  This file is part of Lumber.
 *  
@@ -30,16 +27,17 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
+#define PORTNUM 1887
 
 int main() {
   int pid = fork();
-  if (pid == 0) {
+  if (pid != 0) {
     int sid = setsid();
     char msg[101];
   
     struct sockaddr_in dest;
     struct sockaddr_in serv;
-    int mysocket;
+    int listenSocket = 0, connSocket = 0;
     socklen_t socksize = sizeof(struct sockaddr_in);
   
     memset(&serv, 0, sizeof(serv));
@@ -48,25 +46,30 @@ int main() {
     serv.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
     serv.sin_port = htons(PORTNUM);
   
-    mysocket = socket(AF_INET, SOCK_STREAM, 0);
-    bind(mysocket, (struct sockaddr *)&serv, sizeof(struct sockaddr));
+    // Bind to the listen socket
+    listenSocket = socket(AF_INET, SOCK_STREAM, 0);
+    if (listenSocket < 0)
+      return LISTEN_SOCKET_BIND_ERROR;
+    bind(listenSocket, (struct sockaddr *)&serv, sizeof(struct sockaddr));
   
-    listen(mysocket, 2);
-    int consocket = accept(mysocket, (struct sockaddr *)&dest, &socksize);
+    if (listen(listenSocket, 10) == -1) 
+      return LISTEN_ERROR;
+    connSocket = accept(listenSocket, (struct sockaddr *)&dest, &socksize);
     int len;
   
-    while (consocket) {
-      len = recv(consocket, msg, 100, 0);
-      msg[len] = '\0';
-      if (len > 0) {
-        if (!strcmp(msg, "kill"))
-          break;
-        printf("%s %d\n", msg, len);
+    while (TRUE) {
+      if (connSocket != -1) {
+        len = recv(connSocket, msg, 100, 0);
+        msg[len] = '\0';
+        if (len > 0) {
+          if (!strcmp(msg, "kill"))
+            break;
+        }
       }
-      consocket = accept(mysocket, (struct sockaddr *)&dest, &socksize);
+      connSocket = accept(listenSocket, (struct sockaddr *)&dest, &socksize);
     }
-    close(consocket);
-    close(mysocket);
+    close(connSocket);
+    close(listenSocket);
   }
   return EXIT_SUCCESS;
 }
