@@ -82,7 +82,10 @@ int main(int argc, char *argv[]) {
       break;
 
     case 3: 
-      sendMessage("kill");
+      returnCode = sendMessage("kill");
+      if (returnCode != 0) 
+        // Maybe build in the ability to start lumberd from here if not running
+        fprintf(stderr, "Connection Error: check lumberd is running\n");
       break;
 
   }

@@ -19,10 +19,15 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
+// Error return codes
+
 #define ARGUMENT_ERROR 2
 #define FILE_ERROR 3
 #define LOG_EXISTS_ERROR 4
 #define INVALID_LOG_ERROR 5
+#define SOCK_CREATE_ERROR 6
+#define CON_FAIL_ERROR 7
+#define WRITE_FAIL_ERROR 8
 
 char *logDirectory;
 
