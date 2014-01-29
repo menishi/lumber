@@ -52,7 +52,7 @@ int main() {
       return LISTEN_SOCKET_BIND_ERROR;
     bind(listenSocket, (struct sockaddr *)&serv, sizeof(struct sockaddr));
   
-    if (listen(listenSocket, 10) == -1) 
+    if (listen(listenSocket, 10) < 0) 
       return LISTEN_ERROR;
     connSocket = accept(listenSocket, (struct sockaddr *)&dest, &socksize);
     int len;
