@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "HistoryParser.h"
-#include "lumber.h"
-
+#include "Types.h"
 
 /***********************
 *  This file is part of Lumber.

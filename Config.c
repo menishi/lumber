@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "lumber.h"
+#include "lumberd/lumberd.h"
+#include "Config.h"
 
 /***********************
 *  This file is part of Lumber.
@@ -22,10 +23,21 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
-char *getIdentifierFromLine(char *line);
-int countLines(FILE *file);
-char *getNthLine(FILE *file, char* line, int n);
-char *getNthLineFromBottom(FILE *file, char* line, int n);
-char *parseHistoryLine(char *line);
-char *getLine(FILE *file, char *line);
-int getLineNumberWithIdent(FILE *file, char *ident);
+char *getConfig(int code) {
+  char *home = getenv("LUMBHOME");
+  char *buffer = malloc(sizeof(char)*100);
+  switch (code) {
+    case DEFAULT_LOG:
+      if (!home) {
+        strcat(buffer, getenv("HOME"));
+      home = strcat(buffer, "/.lumber/default.lumb");
+      }
+      break;
+  }
+  return home;
+} 
+
+int main() {
+  getConfig(0);
+  return 0;
+}

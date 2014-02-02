@@ -37,7 +37,3 @@ struct args {
   int lines;
 };
 
-struct fileAndLen {
-  FILE *file;
-  int length;
-};

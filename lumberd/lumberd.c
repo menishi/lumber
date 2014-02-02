@@ -7,6 +7,7 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include "lumberd.h"
+#include "../Config.h"
 
 /***********************
 *  This file is part of Lumber.
@@ -34,6 +35,8 @@ int main() {
   if (pid != 0) {
     int sid = setsid();
     char msg[101];
+
+
   
     struct sockaddr_in dest;
     struct sockaddr_in serv;

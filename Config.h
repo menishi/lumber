@@ -17,10 +17,4 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
-#define LISTEN_SOCKET_BIND_ERROR -1
-#define LISTEN_ERROR -2
-#define TRUE 1
-
-#define DEFAULT_LOG 0
-
-FILE *currentLog;
+char *getConfig(int code);

@@ -4,8 +4,9 @@
 #include <unistd.h>
 #include "lumber.h"
 #include "ArgumentProcessing.h"
-#include "HistoryParser.h"
+#include "../HistoryParser.h"
 #include "Networking.h"
+#include "../Types.h"
 
 /***********************
 *  This file is part of Lumber.
@@ -41,6 +42,7 @@ int main(int argc, char *argv[]) {
   char *line = malloc(sizeof(int)*100);
   char *nudderline;
   char *logFilePath;
+  char *logFile;
 
   int cmdCode = cmdproc(argc, argv);
   switch(cmdCode)  {
@@ -50,6 +52,7 @@ int main(int argc, char *argv[]) {
       break;
     
     case 1:                                                            // 1 for a create statement
+      logFile = strcat(argv[2],".lumb");
       logFilePath = pathToFile(logDirectory,argv[2]);
       if (access(logFilePath, F_OK) != -1) {
         fprintf(stderr, "ERROR: log \"%s\" already exists\n", argv[2]);
@@ -63,6 +66,8 @@ int main(int argc, char *argv[]) {
       break;
 
     case 2:                                                            // 2 for a switch statement
+      logFile = strcat(argv[2],".lumb");
+      logFile = strcat(argv[2],".lumb");
       logFilePath = pathToFile(logDirectory, argv[2]);
       if (access(logFilePath, F_OK) == -1) {
         fprintf(stderr, "ERROR: log \"%s\" does not exist\n", argv[2]);
@@ -71,7 +76,8 @@ int main(int argc, char *argv[]) {
       log = fopen(logFilePath, "r");
       if (!log) {
         fprintf(stderr, "ERROR: file could not be opened\n");
-        returnCode =  FILE_ERROR;
+        returnCode = FILE_ERROR;
+        break;
       } else {
         line = getNthLineFromBottom(log, line, 0);
         line = getIdentifierFromLine(line);
@@ -89,10 +95,9 @@ int main(int argc, char *argv[]) {
       break;
 
   }
-  if (cmdCode == 1 || cmdCode == 2) {
+  if ((cmdCode == 1 || cmdCode == 2) && returnCode == 0) {
     for (n = all->lines;n >= 0; n--) {                                // This component takes the last n lines 
-      fprintf(log, "%s\n", getNthLineFromBottom(histFile->file, line, n)); // from the history file and enters it into the
-      printf("%s\n", getNthLineFromBottom(histFile->file, line, n));
+      fprintf(log, "%s\n", getNthLine(histFile->file, line, histFile->length - n)); // from the history file and enters it into the
     }                                                                // log file
   }
   return returnCode;

@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 /***********************
 *  This file is part of Lumber.
 *  
@@ -17,10 +21,10 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
-#define LISTEN_SOCKET_BIND_ERROR -1
-#define LISTEN_ERROR -2
-#define TRUE 1
-
-#define DEFAULT_LOG 0
-
-FILE *currentLog;
+char *getIdentifierFromLine(char *line);
+int countLines(FILE *file);
+char *getNthLine(FILE *file, char* line, int n);
+char *getNthLineFromBottom(FILE *file, char* line, int n);
+char *parseHistoryLine(char *line);
+char *getLine(FILE *file, char *line);
+int getLineNumberWithIdent(FILE *file, char *ident);

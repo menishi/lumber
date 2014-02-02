@@ -3,6 +3,7 @@
 #include <string.h>
 #include "ArgumentProcessing.h"
 #include "lumber.h"
+#include "../Types.h"
 
 /***********************
 *  This file is part of Lumber.
