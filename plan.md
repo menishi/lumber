@@ -16,6 +16,7 @@ Task 3: Now we want to create a deamon program that stores
 
    Subtask 1: create a way to communicate with the process
       We will be using the loopback interface
+      Researched multithreading!
 
    ~ DONE
    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
