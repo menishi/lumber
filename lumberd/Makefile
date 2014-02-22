@@ -1,7 +1,7 @@
 all: lumberd
 
-lumberd: lumberd.c lumberd.h 
-	gcc lumberd.c -o lumberd.x
+lumberd: lumberd.c lumberd.h Network.c Network.h
+	gcc lumberd.c Network.c -o lumberd.x
 
 clean:
 	rm lumberd.x

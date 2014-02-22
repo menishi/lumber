@@ -2,12 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <arpa/inet.h>
-#include <sys/types.h>
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include "lumberd.h"
+#include <pthread.h>
+#include "Network.h"
 #include "../Config.h"
+#include "lumberd.h"
 
 /***********************
 *  This file is part of Lumber.
@@ -28,51 +26,20 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
-#define PORTNUM 1887
 
 int main() {
   int pid = fork();
   if (pid != 0) {
     int sid = setsid();
-    char msg[101];
 
+    struct NetworkData data;
+    pthread_t pth;
 
+    pthread_create(&pth, NULL, startNetwork, &data);
+
+    pthread_join(pth, NULL);
+    if (!strcmp(data.mode, "kill")) printf("yay!\n");
   
-    struct sockaddr_in dest;
-    struct sockaddr_in serv;
-    int listenSocket = 0, connSocket = 0;
-    socklen_t socksize = sizeof(struct sockaddr_in);
-  
-    memset(&serv, 0, sizeof(serv));
-  
-    serv.sin_family = AF_INET;
-    serv.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
-    serv.sin_port = htons(PORTNUM);
-  
-    // Bind to the listen socket
-    listenSocket = socket(AF_INET, SOCK_STREAM, 0);
-    if (listenSocket < 0)
-      return LISTEN_SOCKET_BIND_ERROR;
-    bind(listenSocket, (struct sockaddr *)&serv, sizeof(struct sockaddr));
-  
-    if (listen(listenSocket, 10) < 0) 
-      return LISTEN_ERROR;
-    connSocket = accept(listenSocket, (struct sockaddr *)&dest, &socksize);
-    int len;
-  
-    while (TRUE) {
-      if (connSocket != -1) {
-        len = recv(connSocket, msg, 100, 0);
-        msg[len] = '\0';
-        if (len > 0) {
-          if (!strcmp(msg, "kill"))
-            break;
-        }
-      }
-      connSocket = accept(listenSocket, (struct sockaddr *)&dest, &socksize);
-    }
-    close(connSocket);
-    close(listenSocket);
-  }
+   }
   return EXIT_SUCCESS;
 }
