@@ -30,6 +30,7 @@
 int main(int argc, char *argv[]) {
   int returnCode = 0;
   struct args *all;
+  char *msg = malloc(sizeof(char)*80);
   FILE *log;
 
   all = optproc(argc, argv);  // This extracts our options
@@ -67,7 +68,6 @@ int main(int argc, char *argv[]) {
 
     case 2:                                                            // 2 for a switch statement
       logFile = strcat(argv[2],".lumb");
-      logFile = strcat(argv[2],".lumb");
       logFilePath = pathToFile(logDirectory, argv[2]);
       if (access(logFilePath, F_OK) == -1) {
         fprintf(stderr, "ERROR: log \"%s\" does not exist\n", argv[2]);
@@ -79,12 +79,17 @@ int main(int argc, char *argv[]) {
         returnCode = FILE_ERROR;
         break;
       } else {
+        // This line is supposed to get the bottom line
         line = getNthLineFromBottom(log, line, 0);
+        // This line gets the identifier from that line
         line = getIdentifierFromLine(line);
         all->lines = histFile->length - getLineNumberWithIdent(histFile->file, line);
         fclose(log);
       }
+
       log = fopen(logFilePath, "a");
+      strcat(msg,"switch");
+      sendMessage(msg);
       break;
 
     case 3: 

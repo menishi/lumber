@@ -46,14 +46,14 @@ void *startNetwork(void *args) {
   // Bind to the listen socket
   listenSocket = socket(AF_INET, SOCK_STREAM, 0);
   if (listenSocket < 0) {
-    data->netError = LISTEN_SOCKET_BIND_ERROR;
-    return "";
+    data->netStatus = LISTEN_SOCKET_BIND_ERROR;
+    return data;
   }
   bind(listenSocket, (struct sockaddr *)&serv, sizeof(struct sockaddr));
 
   if (listen(listenSocket, 10) < 0)  {
-    data->netError = LISTEN_ERROR;
-    return "";
+    data->netStatus = LISTEN_ERROR;
+    return data;
   }
   connSocket = accept(listenSocket, (struct sockaddr *)&dest, &socksize);
   int len;
@@ -63,14 +63,18 @@ void *startNetwork(void *args) {
       len = recv(connSocket, msg, 100, 0);
       msg[len] = '\0';
       if (len > 0) {
-        if (!strcmp(msg, "kill"))
+        if (!strcmp(msg, "kill")) {
           strcpy(data->mode, msg);
           break;
+        } else if (!strcmp(msg, "switch")) {
+          strcpy(data->mode,msg);
+        }
       }
     }
     connSocket = accept(listenSocket, (struct sockaddr *)&dest, &socksize);
   }
   close(connSocket);
   close(listenSocket);
-  return "";
+  data->netStatus = NETWORK_SUCCESS;
+  return data;
 }

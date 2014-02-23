@@ -36,10 +36,13 @@ int main() {
     pthread_t pth;
 
     pthread_create(&pth, NULL, startNetwork, &data);
-
+    while (1) {
+      if (!strcmp(data.mode,"switch")) {
+        printf("YAY!\n");
+        break;
+      }
+    }
     pthread_join(pth, NULL);
-    if (!strcmp(data.mode, "kill")) printf("yay!\n");
-  
    }
   return EXIT_SUCCESS;
 }

@@ -20,12 +20,14 @@
 #define LISTEN_SOCKET_BIND_ERROR -1
 #define LISTEN_ERROR -2
 #define TRUE 1
+#define NETWORK_SUCCESS 0
 
 #define DEFAULT_LOG 0
 
 FILE *currentLogFile;
 
 struct NetworkData {
-  int netError;
+  int netStatus;
   char mode[100];
+  char currentLog[100];
 };

@@ -28,7 +28,7 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
-#define MAXREC 100
+#define MAXREC 500
 #define PORTNUM 1887
 
 int sendMessage(char *msg) {

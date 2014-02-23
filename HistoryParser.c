@@ -26,7 +26,7 @@
 char *getIdentifierFromLine(char *line) {
   char *ident = malloc(sizeof(char)*30);
   int i = 0;
-  while (line[i] != ';') {
+  while (line[i] != ';' && line[i] != '\0') {
     ident[i] = line[i];
     i++;
   }
