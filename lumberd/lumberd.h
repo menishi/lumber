@@ -21,13 +21,25 @@
 #define LISTEN_ERROR -2
 #define TRUE 1
 #define NETWORK_SUCCESS 0
+#define KILL_RECEIVED 0
 
 #define DEFAULT_LOG 0
 
-FILE *currentLogFile;
+#define KILL_COMMAND 1
 
 struct NetworkData {
   int netStatus;
-  char mode[100];
-  char currentLog[100];
+  char *mode;
+  char *currentLog;
+};
+
+struct FileAndPath {
+  FILE *file;
+  char *path;
+};
+
+struct LogState {
+  struct FileAndPath currentLog;
+  struct FileAndPath histFile;
+  int cmd;
 };

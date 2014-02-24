@@ -88,15 +88,17 @@ int main(int argc, char *argv[]) {
       }
 
       log = fopen(logFilePath, "a");
-      strcat(msg,"switch");
-      sendMessage(msg);
+      strcat(msg,"switch lumber");
+      returnCode = sendMessage(msg);
+      if (returnCode != 0)
+        fprintf(stderr, "Connection Error: check lumberd is running \n\t Error Code: %d\n", returnCode);
       break;
 
     case 3: 
       returnCode = sendMessage("kill");
       if (returnCode != 0) 
         // Maybe build in the ability to start lumberd from here if not running
-        fprintf(stderr, "Connection Error: check lumberd is running\n");
+        fprintf(stderr, "Connection Error: check lumberd is running \n\t Error Code: %d\n", returnCode);
       break;
 
   }

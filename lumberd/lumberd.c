@@ -26,23 +26,44 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
+// 1. Add initial conditions for machine state
+// 2. Clean up startNetwork procedure
+// 3. Define the msgProc function
+// 4. Add memory freeing for everything
 
 int main() {
   int pid = fork();
   if (pid != 0) {
     int sid = setsid();
 
-    struct NetworkData data;
-    pthread_t pth;
+    struct LogState lst;
+    lst.currentLog = malloc(sizeof(struct FileAndPath));
+    lst.histFile = malloc(sizeof(struct FileAndPath));
 
+    struct NetworkData data;
+    data.mode = malloc(sizeof(char)*100);
+    data.currentLog = malloc(sizeof(char)*100);
+
+    pthread_t pth;
     pthread_create(&pth, NULL, startNetwork, &data);
+
     while (1) {
-      if (!strcmp(data.mode,"switch")) {
-        printf("YAY!\n");
-        break;
+      usleep(20000);
+      msgProc(&lst, &data);
+
+      switch (lst.cmd) {
+        case KILL_COMMAND:
+          return KILL_RECEIVED;
+        default:
+          break;
       }
     }
+
     pthread_join(pth, NULL);
+    free(lst.currentLog);
+    free(lst.histFile);
+    free(data.currentLog);
+    free(data.mode);
    }
   return EXIT_SUCCESS;
 }

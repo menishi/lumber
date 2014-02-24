@@ -18,3 +18,4 @@
 ***********************/
 
 void *startNetwork(void *args);
+void msgProc(struct LogState *lst, struct NetworkData *data);

@@ -29,7 +29,7 @@
 ***********************/
 
 #define MAXREC 500
-#define PORTNUM 1887
+#define PORTNUM 31887
 
 int sendMessage(char *msg) {
   int len, mysocket;

@@ -27,7 +27,7 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
-#define PORTNUM 1887
+#define PORTNUM 31887
 
 void *startNetwork(void *args) {
   char msg[101];
