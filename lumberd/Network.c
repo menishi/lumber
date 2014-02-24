@@ -30,8 +30,10 @@
 #define PORTNUM 31887
 
 void *startNetwork(void *args) {
+  // Message from network container
   char msg[101];
   struct NetworkData *data = (struct NetworkData*)args;
+  
   struct sockaddr_in dest;
   struct sockaddr_in serv;
   int listenSocket = 0, connSocket = 0;
@@ -55,6 +57,7 @@ void *startNetwork(void *args) {
     data->netStatus = LISTEN_ERROR;
     return data;
   }
+
   connSocket = accept(listenSocket, (struct sockaddr *)&dest, &socksize);
   int len;
 

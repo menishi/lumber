@@ -48,6 +48,7 @@ int main() {
     pthread_create(&pth, NULL, startNetwork, &data);
 
     while (1) {
+      // This is to avoid eating up to much proccessor power
       usleep(20000);
       msgProc(&lst, &data);
 
@@ -60,6 +61,7 @@ int main() {
     }
 
     pthread_join(pth, NULL);
+
     free(lst.currentLog);
     free(lst.histFile);
     free(data.currentLog);
