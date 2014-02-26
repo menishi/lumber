@@ -7,6 +7,8 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include "lumberd.h"
+#include <regex.h>
+#include "../Config.h"
 
 /***********************
 *  This file is part of Lumber.
@@ -66,12 +68,8 @@ void *startNetwork(void *args) {
       len = recv(connSocket, msg, 100, 0);
       msg[len] = '\0';
       if (len > 0) {
-        if (!strcmp(msg, "kill")) {
-          strcpy(data->mode, msg);
-          break;
-        } else if (!strcmp(msg, "switch")) {
-          strcpy(data->mode,msg);
-        }
+        strcpy(data->mode, msg);
+        break;
       }
     }
     connSocket = accept(listenSocket, (struct sockaddr *)&dest, &socksize);
@@ -80,4 +78,19 @@ void *startNetwork(void *args) {
   close(listenSocket);
   data->netStatus = NETWORK_SUCCESS;
   return data;
+}
+
+void msgProc(struct LogState *lst, struct NetworkData *data) {
+  regex_t regex;
+  int reti;
+  reti = regcomp(&regex, "switch .*", 0);
+  reti = regexec(&regex, data->mode, 0, NULL, 0);
+  char *passer = data->mode;
+  if (!reti) {
+    lst->cmd = 2;
+    while (*passer != ' ') passer++;
+    lst->currentLog.path = getLogPath(passer);
+    lst->currentLog.file = fopen(lst->currentLog.path, "r");
+  }
+  regfree(&regex);
 }

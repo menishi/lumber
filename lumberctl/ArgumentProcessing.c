@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../Config.h"
 #include "ArgumentProcessing.h"
 #include "lumber.h"
 #include "../Types.h"
@@ -24,8 +25,6 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
-void envproc(struct args *all);
-
 struct args *optproc(int argc, char *argv[]) {
   /***********************
    * This is a method for extracting options from the arguments
@@ -42,7 +41,7 @@ struct args *optproc(int argc, char *argv[]) {
    ***********************/  
 
   struct args *all = malloc(sizeof(struct args));
-  envproc(all);
+  all->home = getConfig(LUMBHOME);
   int i;
   all->lines = 0;
   for (i = 2; i < argc; i++) {
@@ -57,18 +56,6 @@ struct args *optproc(int argc, char *argv[]) {
 	  all->file = strcat(all->home, "/.history");
 	}
   return all;
-}
-
-void envproc(struct args *all) {
-  // This method has the job of extracting
-  // default values and other information
-  // from environment variables.
-  all->home = getenv("HOME");
-  if (!(logDirectory = getenv("LUMBHOME"))) {
-      logDirectory = malloc(sizeof(char)*150);
-      strcat(logDirectory,  all->home);
-      strcat(logDirectory, "/.lumber/");
-  }
 }
 
 int cmdproc(int argc, char *argv[]) {

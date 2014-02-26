@@ -89,6 +89,7 @@ int main(int argc, char *argv[]) {
 
       log = fopen(logFilePath, "a");
       strcat(msg,"switch lumber");
+      printf("%s\n",msg);
       returnCode = sendMessage(msg);
       if (returnCode != 0)
         fprintf(stderr, "Connection Error: check lumberd is running \n\t Error Code: %d\n", returnCode);

@@ -37,12 +37,14 @@ int main() {
     int sid = setsid();
 
     struct LogState lst;
-    lst.currentLog = malloc(sizeof(struct FileAndPath));
-    lst.histFile = malloc(sizeof(struct FileAndPath));
 
     struct NetworkData data;
     data.mode = malloc(sizeof(char)*100);
     data.currentLog = malloc(sizeof(char)*100);
+    lst.currentLog.path = getConfig(DEFAULT_LOG);
+    lst.currentLog.file = fopen(lst.currentLog.path, "r");
+    lst.histFile.path = getConfig(DEFAULT_LOG);
+    lst.histFile.file = fopen(lst.histFile.path, "r");
 
     pthread_t pth;
     pthread_create(&pth, NULL, startNetwork, &data);
@@ -55,6 +57,7 @@ int main() {
       switch (lst.cmd) {
         case KILL_COMMAND:
           return KILL_RECEIVED;
+        case SWITCH_COMMAND:
         default:
           break;
       }
@@ -62,8 +65,6 @@ int main() {
 
     pthread_join(pth, NULL);
 
-    free(lst.currentLog);
-    free(lst.histFile);
     free(data.currentLog);
     free(data.mode);
    }

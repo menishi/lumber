@@ -17,4 +17,10 @@
 *  Copyright 2013 Donal O'Shea
 ***********************/
 
+#define LUMBHOME 0
+#define DEFAULT_LOG 1
+#define HISTFILE 2
+
 char *getConfig(int code);
+char *getLogPath(char *log);
+char *lumbHome;

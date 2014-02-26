@@ -1,3 +1,4 @@
+#include "lumberd.h"
 /***********************
 *  This file is part of Lumber.
 *  

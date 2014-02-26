@@ -1,3 +1,4 @@
+#pragma once
 /***********************
 *  This file is part of Lumber.
 *  
@@ -23,9 +24,8 @@
 #define NETWORK_SUCCESS 0
 #define KILL_RECEIVED 0
 
-#define DEFAULT_LOG 0
-
 #define KILL_COMMAND 1
+#define SWITCH_COMMAND 2
 
 struct NetworkData {
   int netStatus;
